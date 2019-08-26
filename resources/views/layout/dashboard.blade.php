@@ -14,9 +14,11 @@
   <!-- Custom fonts for this template-->
   <link href="{{ asset('resources/css/all.min.css') }}" rel="stylesheet" type="text/css">
   <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
   <!-- Custom styles for this template-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.css">
   <link href="{{ asset('resources/css/sb-admin-2.min.css') }}" rel="stylesheet">
+
 
 </head>
 
@@ -29,11 +31,14 @@
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
       <!-- Sidebar - Brand -->
-      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+      {{-- <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{route('dashboard')}}"> --}}
         <div class="sidebar-brand-icon rotate-n-15">
 
         </div>
-        <div class="sidebar-brand-text mx-3"> Admin </div>
+        <div class="sidebar-brand-text mx-3">
+           <a href="{{route('dashboard')}}" style="display:block;text-align:center;padding:10px 0;" >
+            <img title="logo"src="{{ asset('storage/icons/logo.png') }}" alt=""
+          style="width:100px;height:100px;" class="image-responsive"></a></div>
       </a>
 
       <!-- Divider -->
@@ -41,52 +46,48 @@
 
       <!-- Nav Item - Dashboard -->
       <li class="nav-item">
-        <a class="nav-link" href="{{  route('dashboard')  }}">
+        <a class="nav-link" href="{{route('dashboard')}}">
 
-          <span>Dashboard</span></a>
+          <span><i class="fa fa-tachometer-alt  fa-fw"></i>Dashboard</span></a>
       </li>
 
       <!-- Divider -->
       <hr class="sidebar-divider">
 
       <!-- Heading -->
-      <div class="sidebar-heading">
-        Interface
-      </div>
+
 
       <!-- Nav Item - Pages Collapse Menu -->
 
-      @if (Auth::user()->add_user_privilage)
 
 
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
 
-          <span>Manage Users</span>
+          <span><i class="fas fa-user fa-2x text-gray-300"></i>Manage Users</span>
         </a>
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Manage Users</h6>
 
-            <a class="collapse-item" href="{{ route('register') }}">Add User</a>
-            <a class="collapse-item" href="{{ route('list_users') }}">List Users</a>
+            <a class="collapse-item" href="{{ url('admin/user/create/form') }}"><i class="fas fa-user-plus fa-1x text-black-300"style="margin-right:10px;"></i>Add User</a>
+            <a class="collapse-item" href="{{ url('admin/users/list') }}"><i class="fas fa-list fa-1x text-black-300"style="margin-right:10px;"></i>List Users</a>
 
         </div>
         </div>
       </li>
-      @endif
       <!-- Nav Item - Utilities Collapse Menu -->
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
-          <span>Utilities</span>
+          <span><i class="fas fa-universal-access fa-2x text-gray-300"></i>Manage Permissions</span>
         </a>
         <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Custom Utilities:</h6>
-            <a class="collapse-item" href="utilities-color.html">Colors</a>
-            <a class="collapse-item" href="utilities-border.html">Borders</a>
-            <a class="collapse-item" href="utilities-animation.html">Animations</a>
-            <a class="collapse-item" href="utilities-other.html">Other</a>
+              <h6 class="collapse-header">Manage Permissions</h6>
+            <a class="collapse-item" href="{{url('admin/permission/form')}}"><i class="fas fa-plus-circle fa-1x text-black-300"style="margin-right:10px;"></i>Add Permission</a>
+          <a class="collapse-item" href="{{url('admin/permission/list')}}"><i class="fas fa-list fa-1x text-black-300"style="margin-right:10px;"></i>List</a>
+            {{-- <a class="collapse-item" href="utilities-animation.html">Animations</a> --}}
+            {{-- <a class="collapse-item" href="utilities-other.html">Other</a> --}}
           </div>
         </div>
       </li>
@@ -145,7 +146,7 @@
             <li class="nav-item dropdown no-arrow mx-1">
               <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 
-                <!-- Counter - Alerts -->
+                <i class="fa fa-bell"></i>
 
               </a>
               <!-- Dropdown - Alerts -->
@@ -193,7 +194,7 @@
             <!-- Nav Item - Messages -->
             <li class="nav-item dropdown no-arrow mx-1">
               <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <!-- Counter - Messages -->
+                  <i class="fa fa-envelope"></i>
               </a>
               <!-- Dropdown - Messages -->
               <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="messagesDropdown">
@@ -249,22 +250,30 @@
             <!-- Nav Item - User Information -->
             <li class="nav-item dropdown no-arrow">
               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ Auth::user()->name }}</span>
+                  <i class="fas fa-user-circle fa-2x text-black-300"style="margin-right:10px;"></i>
+                <span class="mr-2 d-none d-lg-inline text-gray-600 small" style="text-transform:uppercase;font-weight:bold;">
+                    {{ Auth::user()->name }}</span>
               </a>
               <!-- Dropdown - User Information -->
               <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                <a class="dropdown-item" href="#">
+                <a class="dropdown-item" href="{{ url('/admin/view/user/'.Auth::user()->id) }}">
                   <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                   Profile
                 </a>
-                <a class="dropdown-item" href="#">
-                  <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                  Settings
-                </a>
-                <a class="dropdown-item" href="#">
+<<<<<<< HEAD
+
+              <a class="dropdown-item" href="{{url('/admin/activity-log')}}">
+=======
+                
+              <a class="dropdown-item" href="{{url('/activitylog')}}">
+>>>>>>> 6dd105a5afa49ef92ef46252e2a6cd7011d2e4b0
                   <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
                   Activity Log
                 </a>
+                <a class="dropdown-item" href="{{url('/admin/settings')}}">
+                    <i class="fas fa-cog fa-sm fa-fw mr-2 text-gray-400"></i>
+                    Settings
+                  </a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                   <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -277,104 +286,14 @@
 
         </nav>
         <!-- End of Topbar -->
-
-        <!-- Begin Page Content -->
-        <div class="container-fluid">
-
-<h1>Dashboard</h1>
-          <!-- Content Row -->
-          <div class="row">
-
-            <!-- Earnings (Monthly) Card Example -->
-            <div class="col-xl-3 col-md-6 mb-4">
-              <div class="card border-left-primary shadow h-100 py-2">
-                <div class="card-body">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Earnings (Monthly)</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">$40,000</div>
-                    </div>
-                    <div class="col-auto">
-                      <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Earnings (Monthly) Card Example -->
-            <div class="col-xl-3 col-md-6 mb-4">
-              <div class="card border-left-success shadow h-100 py-2">
-                <div class="card-body">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Earnings (Annual)</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">$215,000</div>
-                    </div>
-                    <div class="col-auto">
-                      <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Earnings (Monthly) Card Example -->
-            <div class="col-xl-3 col-md-6 mb-4">
-              <div class="card border-left-info shadow h-100 py-2">
-                <div class="card-body">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Tasks</div>
-                      <div class="row no-gutters align-items-center">
-                        <div class="col-auto">
-                          <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">50%</div>
-                        </div>
-                        <div class="col">
-                          <div class="progress progress-sm mr-2">
-                            <div class="progress-bar bg-info" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-auto">
-                      <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Pending Requests Card Example -->
-            <div class="col-xl-3 col-md-6 mb-4">
-              <div class="card border-left-warning shadow h-100 py-2">
-                <div class="card-body">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Pending Requests</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
-                    </div>
-                    <div class="col-auto">
-                      <i class="fas fa-comments fa-2x text-gray-300"></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-
-        </div>
-        <!-- /.container-fluid -->
-
-      </div>
+@yield('content')
       <!-- End of Main Content -->
 
       <!-- Footer -->
       <footer class="sticky-footer bg-white">
         <div class="container my-auto">
           <div class="copyright text-center my-auto">
-            <span>Copyright &copy; Your Website 2019</span>
+          <span>Copyright &copy; TektiksWorks.com {{date('Y')}}</span>
           </div>
         </div>
       </footer>
@@ -410,16 +329,54 @@
     </div>
   </div>
 
+  <button type="button" id="alert-button" style="display:none" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
+
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+        </div>
+        <div class="modal-body">
+          <p>{{ session('add_user_failed') }}</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Ok</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
   <!-- Bootstrap core JavaScript-->
   <script src="{{ asset('resources/js/jquery.min.js')}}"></script>
   <script src="{{ asset('resources/js/bootstrap.bundle.min.js') }}"></script>
-
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
   <!-- Core plugin JavaScript-->
   <script src="{{ asset('resources/js/jquery.easing.min.js') }}"></script>
 
   <!-- Custom scripts for all pages-->
   <script src="{{ asset('resources/js/sb-admin-2.min.js') }}"></script>
+<script>
+$('select').selectpicker();
+$("document").ready(function(){
+    setTimeout(function(){
+       $("div.alert").remove();
+    }, 3000 ); // 5 secs
 
+});
+</script>
+
+@if ($message=session('add_user_failed'))
+<script>
+     $('#alert-button').click();
+</script>
+@endif
 </body>
 
 </html>

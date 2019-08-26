@@ -1,11 +1,11 @@
 <?php
 
 namespace App;
-
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-
+use App\permission;
 class User extends Authenticatable
 {
     use Notifiable;
@@ -36,4 +36,19 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+    public function permissions()
+    {
+        return $this->belongsToMany('App\Permission','App\user_permission');
+    }
+    public function profileimage(){
+        return $this->belongsto('App\User');
+
+    }
+    public function haspermission($permission)
+    {
+
+        // dd((bool)$this->permissions->where('permissionslug',$permission)->count());
+        return (bool) $this->permissions->where('permissionslug',$permission)->count();
+    }
+    
 }

@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use App\User;
+use App\Permission;
+use App\user_permission;
+use App\activitylog;
 class HomeController extends Controller
 {
     /**
@@ -23,6 +26,10 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $users=User::all();
+        $permissions=Permission::all();
+        $toal_visitors=activitylog::select('userid')->distinct('userid')->get()->count();
+        // dd($user_permissions);
+        return view('welcome',compact('users','permissions','toal_visitors'));
     }
 }

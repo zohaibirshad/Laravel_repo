@@ -1,6 +1,6 @@
 <?php
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\LoginController;
 
 /*
 |--------------------------------------------------------------------------
@@ -12,29 +12,61 @@ use App\Http\Controllers\Auth\LoginController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+//User edit routes
+Route::group(['middleware' =>'activitylog'], function () {
 
-Route::get('/', function () {
-    return view('welcome');
+    Route::group(['middleware' => 'check-permission:permission-actions'], function () {
+        Route::group(['prefix' => 'admin'], function () {
+            Route::post('/update/permission/{name}','PermissionController@update');
+            Route::get('/view/permission/{name}','PermissionController@show');
+            Route::get('/delete/permission/{name}','PermissionController@destroy');
+            Route::get('/edit/permission/{name}','PermissionController@edit');
+            Route::post('/permission/add','PermissionController@store');
+            Route::get('/permission/list','PermissionController@index');
+            Route::get('/permission/form','PermissionController@create');
+        });
+    });
+    Route::group(['middleware'=>'check-permission:user-actions'],function(){
+        Route::group(['prefix' => 'admin'], function () {
+            Route::get('/user/create/form','UserController@create');
+            Route::get('/edit/user/{id}/','UserController@edit');
+            Route::get('/delete/user/{id}/','UserController@destroy');
+            Route::post('/update/user/{id}','UserController@update');
+            Route::post('/create/user','UserController@store');
+            Route::get('/view/user/{id}','UserController@show');
+            Route::get('/users/list','UserController@index');
+            Route::get('/profile','UserController@show');
+        });
+        Route::get('/settings',function(){
+            return view('user.settings');
+        });
+    });
+});
+Route::get('activitylog','ActivitylogController@index');
+
+Route::group(['middleware' => ['auth']], function () {
+Route::get('/',function(){
+   return redirect('dashboard');
+});
+    Route::get('/dashboard',function(){
+        return redirect('/welcome');
+    })->name('dashboard');
+
+    Route::get('/welcome','HomeController@index');
+
+
 });
 
-//Registration Routes
-Route::get('/register','RegisterController@create')->name('register_form');
-Route::post('/register','RegisterController@store')->name('register');
-Route::get('/users','RegisterController@show')->name('list_users');
 
 
 //Login and Logout Routes
-
 Route::get('/login','LoginController@create')->name('login_form');
 Route::post('/login','LoginController@login')->name('login');
 Route::get('/logout','LoginController@destroy')->name('logout');
-
-
 //Route to dashboard
-Route::get('/dashboard',function(){
-    return view('layout.dashboard');
-})->name('dashboard')->middleware('auth');
+// dd('in route');
 
-// Auth::routes();
 
-// Route::get('/home', 'HomeController@index')->name('home');
+Route::get('sendbasicemail','MailController@basic_email');
+Route::get('sendhtmlemail','MailController@html_email');
+Route::get('sendattachmentemail','MailController@attachment_email');
